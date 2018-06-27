@@ -1,29 +1,26 @@
 'use strict';
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+    let disposable = vscode.commands.registerCommand('extension.insertHoliday', () => {
 
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "myfirstextension" is now active!');
+        const holidayList = "元日 成人の日 建国記念の日 春分の日 昭和の日 憲法記念日 みどりの日 こどもの日 海の日 山の日 敬老の日 秋分の日 体育の日 文化の日 勤労感謝の日 天皇誕生日 元日 成人の日 建国記念の日 建国記念の日 振替休日 春分の日 昭和の日 昭和の日 振替休日 憲法記念日 みどりの日 こどもの日 海の日 山の日 敬老の日 秋分の日 秋分の日 振替休日 体育の日 文化の日 勤労感謝の日 天皇誕生日 天皇誕生日 振替休日 元日 成人の日 建国記念の日 春分の日 昭和の日 憲法記念日 みどりの日 こどもの日 こどもの日 振替休日 海の日 山の日 山の日 振替休日 敬老の日 秋分の日 体育の日 文化の日 文化の日 振替休日 勤労感謝の日".split(/ /g);
+        vscode.window.showQuickPick(holidayList).then(item => {
+            if (!item) { return; }
 
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with  registerCommand
-    // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('extension.sayHello', () => {
-        // The code you place here will be executed every time your command is executed
+            const editor = vscode.window.activeTextEditor;
+            if (!editor) { return; }
 
-        // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World!');
+            editor.edit(editBuilder => {
+                editor.selections.forEach(selection => {
+                    editBuilder.insert(selection.start, item);
+                });
+            });
+        });
+
     });
 
     context.subscriptions.push(disposable);
 }
 
-// this method is called when your extension is deactivated
 export function deactivate() {
 }
